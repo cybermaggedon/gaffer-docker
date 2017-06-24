@@ -14,8 +14,8 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=0.6.6
-VERSION=0.6.6
+GAFFER_VERSION=0.7.4
+VERSION=0.7.4
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
 

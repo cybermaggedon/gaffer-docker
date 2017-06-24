@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Location for persistent data
-data_dir=/data
+data_dir=/tmp/data
 
 # Initialise data directory for Hadoop, ZK, Accumulo
 mkdir -p ${data_dir}/hadoop
@@ -13,19 +13,19 @@ mkdir -p ${data_dir}/accumulo
 
 # Run Hadoop
 docker run -d --name hadoop -v ${data_dir}/hadoop:/data \
-       cybermaggedon/hadoop:2.7.3
+       cybermaggedon/hadoop:2.8.0
 
 # Run Zookeeper
 docker run -d --name zookeeper -v ${data_dir}/zookeeper:/data \
-       cybermaggedon/zookeeper:3.4.9b
+       cybermaggedon/zookeeper:3.4.10
 
 # Run Accumulo
 docker run -d --name accumulo -v ${data_dir}/accumulo:/accumulo \
        --link zookeeper:zookeeper \
-       --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.6.6
+       --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.7.4
 
 # Run Wildfly, exposing port 8080.
 docker run -d --name wildfly --link zookeeper:zookeeper \
        --link hadoop:hadoop --link accumulo:accumulo \
-       -p 8080:8080 cybermaggedon/wildfly-gaffer:0.6.6
+       -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4
 

@@ -6,7 +6,7 @@ data = """
 {
     "elements": [
 	{
-	    "class": "gaffer.data.element.Edge",
+	    "class": "uk.gov.gchq.gaffer.data.element.Edge",
 	    "properties": {
 		"count": 1
 	    },
@@ -16,7 +16,7 @@ data = """
 	    "directed": true
 	},
 	{
-	    "class": "gaffer.data.element.Edge",
+	    "class": "uk.gov.gchq.gaffer.data.element.Edge",
 	    "properties": {
 		"count": 1
 	    },
@@ -26,7 +26,7 @@ data = """
 	    "directed": true
 	},
 	{
-	    "class": "gaffer.data.element.Entity",
+	    "class": "uk.gov.gchq.gaffer.data.element.Entity",
 	    "properties": {
 		"count": 1
 	    },
@@ -34,7 +34,7 @@ data = """
 	    "vertex": "bristol"
 	},
         {
-	    "class": "gaffer.data.element.Entity",
+	    "class": "uk.gov.gchq.gaffer.data.element.Entity",
 	    "properties": {
 		"count": 1
 	    },
@@ -42,7 +42,7 @@ data = """
 	    "vertex": "birmingham"
 	},
         {
-	    "class": "gaffer.data.element.Entity",
+	    "class": "uk.gov.gchq.gaffer.data.element.Entity",
 	    "properties": {
 		"count": 1
 	    },
