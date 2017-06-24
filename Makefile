@@ -14,8 +14,8 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=0.4.4
-VERSION=0.4.4g
+GAFFER_VERSION=0.6.6
+VERSION=0.6.6
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
 
@@ -26,8 +26,8 @@ WAR_FILES=\
 JAR_FILES=\
         gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
         gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
-        gaffer/simple-function-library/${GAFFER_VERSION}/simple-function-library-${GAFFER_VERSION}-shaded.jar \
-        gaffer/simple-serialisation-library/${GAFFER_VERSION}/simple-serialisation-library-${GAFFER_VERSION}-shaded.jar
+        gaffer/function/${GAFFER_VERSION}/function-${GAFFER_VERSION}.jar \
+        gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar
 
 SUDO=
 BUILD_ARGS=
@@ -49,19 +49,19 @@ product:
 build: product
 	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} --build-arg GAFFER_VERSION=${GAFFER_VERSION} -t gaffer-build -f Dockerfile.build .
 	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \
-	dir=/root/.m2/repository; \
+	dir=/root/.m2/repository/uk/gov/gchq; \
 	for file in ${WAR_FILES} ${JAR_FILES}; do \
 		bn=$$(basename $$file); \
 		${SUDO} docker cp $${id}:$${dir}/$${file} product/$${bn}; \
 	done; \
 	${SUDO} docker rm -f $${id}
 
-container: wildfly-10.1.0.CR1.zip
+container: wildfly-10.1.0.Final.zip
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
 
-wildfly-10.1.0.CR1.zip:
-	wget download.jboss.org/wildfly/10.1.0.CR1/wildfly-10.1.0.CR1.zip
+wildfly-10.1.0.Final.zip:
+	wget download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip
 
 push:
 	${SUDO} docker push ${ACCUMULO_REPOSITORY}:${VERSION}
