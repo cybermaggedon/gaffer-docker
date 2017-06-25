@@ -2,7 +2,11 @@
 
 import requests
 
-data = '{}'
+data = """
+{
+   "class": "uk.gov.gchq.gaffer.operation.impl.get.GetAllElements"
+}
+"""
 
 url = 'http://localhost:8080/rest/v1/graph/doOperation/get/elements/all'
 

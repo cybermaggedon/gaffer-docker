@@ -4,7 +4,10 @@ import requests
 
 data = """
 {
-    "elements": [
+    "class": "uk.gov.gchq.gaffer.operation.impl.add.AddElements",
+    "validate": true,
+    "skipInvalidElements": false,
+    "input": [
 	{
 	    "class": "uk.gov.gchq.gaffer.data.element.Edge",
 	    "properties": {

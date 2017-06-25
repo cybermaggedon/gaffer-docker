@@ -15,18 +15,18 @@
 ##########################################################
 
 GAFFER_VERSION=0.7.4
+KORYPHE_VERSION=0.1.2
 VERSION=0.7.4
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
 
 WAR_FILES=\
-	gaffer/example-rest/${GAFFER_VERSION}/example-rest-${GAFFER_VERSION}.war \
-        gaffer/ui/${GAFFER_VERSION}/ui-${GAFFER_VERSION}.war
+	gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
 
 JAR_FILES=\
         gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
         gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
-        gaffer/function/${GAFFER_VERSION}/function-${GAFFER_VERSION}.jar \
+        koryphe/koryphe/${KORYPHE_VERSION}/koryphe-${KORYPHE_VERSION}.jar \
         gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar
 
 SUDO=
