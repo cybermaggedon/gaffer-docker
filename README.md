@@ -44,9 +44,6 @@ The code here:
 
 For Hadoop and Zookeeper, I have containers ready to use.
 
-The memory settings of Accumulo are low to ensure Accumulo runs in a
-small footprint.  Don't expect performance.
-
 To run:
 
 ```
