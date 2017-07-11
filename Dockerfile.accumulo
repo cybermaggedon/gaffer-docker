@@ -14,7 +14,7 @@
 # limitations under the License.
 ##########################################################
 
-FROM cybermaggedon/accumulo:1.8.1
+FROM cybermaggedon/accumulo:1.8.1a
 
 COPY product/*.jar /usr/local/accumulo/lib/ext/
 
