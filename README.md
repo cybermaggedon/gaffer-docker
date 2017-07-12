@@ -55,12 +55,12 @@ To run:
 
   # Run Accumulo
   docker run -d --name accumulo --link zookeeper:zookeeper \
-        --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.7.4a
+        --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.7.4b
 
   # Run Wildfly, exposing port 8080.
   docker run -d --name wildfly --link zookeeper:zookeeper \
     --link hadoop:hadoop --link accumulo:accumulo \
-    -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+    -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4b
 
 ```
 
@@ -82,12 +82,12 @@ Wildfly needs no persistent state.
   # Run Accumulo
   docker run -d --name accumulo \
         --link zookeeper:zookeeper \
-        --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.7.4a
+        --link hadoop:hadoop cybermaggedon/accumulo-gaffer:0.7.4b
 
   # Run Wildfly, exposing port 8080.
   docker run -d --name wildfly --link zookeeper:zookeeper \
     --link hadoop:hadoop --link accumulo:accumulo \
-    -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+    -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4b
 
 ```
 
@@ -170,7 +170,7 @@ To set up a cluster, you need to take control of address allocation.
       -e MONITOR_HOSTS=10.10.10.10 \
       -e TRACER_HOSTS=10.10.10.10 \
       --link hadoop01:hadoop01 \
-      --name acc01 cybermaggedon/accumulo-gaffer:0.7.4a
+      --name acc01 cybermaggedon/accumulo-gaffer:0.7.4b
 
   docker run -d --ip=10.10.10.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
@@ -183,7 +183,7 @@ To set up a cluster, you need to take control of address allocation.
       -e MONITOR_HOSTS=10.10.10.10 \
       -e TRACER_HOSTS=10.10.10.10 \
       --link hadoop01:hadoop01 \
-      --name acc02 cybermaggedon/accumulo-gaffer:0.7.4a
+      --name acc02 cybermaggedon/accumulo-gaffer:0.7.4b
 
   docker run -d --ip=10.10.10.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
@@ -196,7 +196,7 @@ To set up a cluster, you need to take control of address allocation.
       -e MONITOR_HOSTS=10.10.10.10 \
       -e TRACER_HOSTS=10.10.10.10 \
       --link hadoop01:hadoop01 \
-      --name acc03 cybermaggedon/accumulo-gaffer:0.7.4a
+      --name acc03 cybermaggedon/accumulo-gaffer:0.7.4b
 
   ############################################################################
   # Wildfly, 3 nodes
@@ -205,13 +205,13 @@ To set up a cluster, you need to take control of address allocation.
   # Run Wildfly, on ports 8080-8082.
   docker run -d --name wildfly1 --ip=10.10.11.10 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4b
   docker run -d --name wildfly2 --ip=10.10.11.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8081:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8081:8080 cybermaggedon/wildfly-gaffer:0.7.4b
   docker run -d --name wildfly3 --ip=10.10.11.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8082:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8082:8080 cybermaggedon/wildfly-gaffer:0.7.4b
 
 
 ```
@@ -283,35 +283,35 @@ and recovered.
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
       --name acc-master \
-      cybermaggedon/accumulo-gaffer:0.7.4a /start-process master
+      cybermaggedon/accumulo-gaffer:0.7.4b /start-process master
 
   # GC
   docker run -d --ip=10.10.10.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.11 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
       -e MONITOR_HOSTS=10.10.10.15 \
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
-      --name acc-gc cybermaggedon/accumulo-gaffer:0.7.4a /start-process gc
+      --name acc-gc cybermaggedon/accumulo-gaffer:0.7.4b /start-process gc
 
   # Slave 1
   docker run -d --ip=10.10.10.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.12 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
       -e MONITOR_HOSTS=10.10.10.15 \
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
-      --name acc-slave1 cybermaggedon/accumulo-gaffer:0.7.4a \
+      --name acc-slave1 cybermaggedon/accumulo-gaffer:0.7.4b \
       /start-process tserver
 
   # Slave 2
@@ -319,14 +319,14 @@ and recovered.
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.13 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
       -e MONITOR_HOSTS=10.10.10.15 \
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
-      --name acc-slave2 cybermaggedon/accumulo-gaffer:0.7.4a \
+      --name acc-slave2 cybermaggedon/accumulo-gaffer:0.7.4b \
       /start-process tserver
 
   # Slave 3
@@ -334,14 +334,14 @@ and recovered.
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.14 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
       -e MONITOR_HOSTS=10.10.10.15 \
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
-      --name acc-slave3 cybermaggedon/accumulo-gaffer:0.7.4a \
+      --name acc-slave3 cybermaggedon/accumulo-gaffer:0.7.4b \
       /start-process tserver
 
   # Monitor - this has the web server.
@@ -350,7 +350,7 @@ and recovered.
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.15 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
@@ -358,13 +358,13 @@ and recovered.
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
       --name acc-monitor \
-      cybermaggedon/accumulo-gaffer:0.7.4a /start-process monitor
+      cybermaggedon/accumulo-gaffer:0.7.4b /start-process monitor
 
   docker run -d --ip=10.10.10.16 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e HDFS_VOLUMES=hdfs://hadoop01:9000/accumulo \
       -e NAMENODE_URI=hdfs://hadoop01:9000/ \
-      -e MY_HOSTNAME=10.10.10.10 \
+      -e MY_HOSTNAME=10.10.10.16 \
       -e MASTER_HOSTS=10.10.10.10 \
       -e GC_HOSTS=10.10.10.11 \
       -e SLAVE_HOSTS=10.10.10.12,10.10.10.13,10.10.10.14 \
@@ -372,7 +372,7 @@ and recovered.
       -e TRACER_HOSTS=10.10.10.16 \
       --link hadoop01:hadoop01 \
       --name acc-tracer \
-      cybermaggedon/accumulo-gaffer:0.7.4a /start-process tracer
+      cybermaggedon/accumulo-gaffer:0.7.4b /start-process tracer
 
 
   ############################################################################
@@ -382,13 +382,13 @@ and recovered.
   # Run Wildfly, on ports 8080-8082.
   docker run -d --name wildfly1 --ip=10.10.11.10 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8080:8080 cybermaggedon/wildfly-gaffer:0.7.4b
   docker run -d --name wildfly2 --ip=10.10.11.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8081:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8081:8080 cybermaggedon/wildfly-gaffer:0.7.4b
   docker run -d --name wildfly3 --ip=10.10.11.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
-      -p 8082:8080 cybermaggedon/wildfly-gaffer:0.7.4a
+      -p 8082:8080 cybermaggedon/wildfly-gaffer:0.7.4b
 
 
 ```
