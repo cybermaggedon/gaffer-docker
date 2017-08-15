@@ -1,0 +1,37 @@
+
+This is a playground for launching Gaffer with KSonnet. The definition files
+here can be used to create a Gaffer cluster configuration for Kubernetes.
+
+The Makefile grabs jsonnet and ksonnet off of Github to compile the
+definitions.
+
+The structure is:
+
+  wildfly.jsonnet         - Deployments and services for Wildfly / Gaffer
+  			    REST API.
+  accumulo.jsonnet        - Deployments and services for Accumulo.
+  hadoop.jsonnet          - Deployments and services for Hadoop.
+  zookeeper.jsonnet       - Deployments and services for ZK.
+
+  everything.jsonnet      - Invokes the above, and outputs a single Kubernetes
+                            configuration.
+
+To use:
+
+  make
+
+creates the JSON form output, everything.json, and
+
+  make everything.yaml
+
+if you prefer YAML (which is converted from JSON using kubectl).
+
+If you've got a Kubernetes cluster ready to apply the config to, then either...
+
+  make apply
+
+or
+ 
+  kubectl apply -f everything.json
+
+
