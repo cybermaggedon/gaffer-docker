@@ -173,7 +173,7 @@ local resources(slaves, zks) = [
 ] + [
 
     // A service for each slave.
-    local name = "accumulo-%04d" % id;
+    local name = "accumulo-slave%04d" % id;
     local labels = svcLabels({app: name, component: "gaffer"});
     svc.new(name, {app: name}, slavePorts) + labels
         for id in std.range(0, slaves-1)
