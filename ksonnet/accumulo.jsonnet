@@ -41,7 +41,7 @@ local ports() = [
 
 // Function, returns a Zookeeper list, comma separated list of ZK IDs.
 local zookeeperList(count) =
-    std.join(",", std.makeArray(count, function(x) "zk%d" % (x + 1)));
+    std.join(",", std.makeArray(count, function(x) "zk%d.zk" % (x + 1)));
 
 // Returns an Accumulo slave list for the SLAVE_HOSTS environment variable.
 // count is the number of slaves, id is the slave number.  This is arranged
@@ -50,8 +50,7 @@ local zookeeperList(count) =
 local slaveList(count, id) =
     std.join(",", std.makeArray(count,
   				function(x)
-				if x == id then "MY_IP"
-				else "accumulo-slave%04d" % x));
+				"slave%04d.accumulo" % x));
 
 // Environment variables
 local envs(slaves, zks, id, proc) = [
@@ -62,15 +61,18 @@ local envs(slaves, zks, id, proc) = [
     // List of master, gc, monitor, tracer and slave hosts.  This does the
     // thing where MY_IP is used instead of a hostname when the node in
     // question supplies the function.
-    env.new("MASTER_HOSTS",
-	    if proc == "master" then "MY_IP" else "accumulo-master"),
-    env.new("GC_HOSTS",
-	    if proc == "gc" then "MY_IP" else "accumulo-gc"),
-    env.new("MONITOR_HOSTS",
-	    if proc == "monitor" then "MY_IP" else "accumulo-monitor"),
-    env.new("TRACER_HOSTS",
-	    if proc == "tracer" then "MY_IP" else "accumulo-tracer"),
-    env.new("SLAVE_HOSTS", slaveList(slaves, id)),
+    env.new("MASTER_HOSTS", "master.accumulo"),
+    env.new("GC_HOSTS", "gc.accumulo"),
+    env.new("MONITOR_HOSTS", "monitor.accumulo"),
+    env.new("TRACER_HOSTS", "tracer.accumulo"),
+
+    // Slaves only need to know about the master, don't need to know about
+    // all the other slaves.  This is only a deal, because in a big cluster,
+    // this would generate a lot of config.
+    if id >= 0 then
+        env.new("SLAVE_HOSTS", "slave%04d.accumulo" % id)
+    else		 
+	env.new("SLAVE_HOSTS", slaveList(slaves, id)),
 
     // HDFS references.
     env.new("HDFS_VOLUMES", "hdfs://hadoop0000:9000/accumulo"),
@@ -118,14 +120,18 @@ local slaveContainers(id, slaves, xks) = [
 local deployment(proc, slaves, zks) =
     depl.new("accumulo-%s" % proc, 1,
 	     containers(proc, slaves, zks),
-	     {app: "accumulo-%s" % proc, component: "gaffer"});
+	     {app: "accumulo", component: "gaffer"}) +
+    depl.mixin.spec.template.spec.hostname(proc) +
+    depl.mixin.spec.template.spec.subdomain("accumulo");
 
 // Deployment definition for non-slave deployments.  id is the slave number
 // slaves is the number of slaves, zks is the number of Zookeepers.
 local slaveDeployment(id, slaves, zks) =
     depl.new("accumulo-slave%04d" % id, 1,
 	     slaveContainers(id, slaves, zks),
-	     {app: "accumulo-slave%04d" % id, component: "gaffer"});
+	     {app: "accumulo", component: "gaffer"}) +
+    depl.mixin.spec.template.spec.hostname("slave%04d" % id) +
+    depl.mixin.spec.template.spec.subdomain("accumulo");
 
 // Ports declared on the other services.
 local servicePorts = [
@@ -144,42 +150,29 @@ local slavePorts = [
 ];
 
 // Function which returns resource definitions - deployments and services.
-local resources(slaves, zks) = [
+local resources(c) =
+[
 
     // Deployments for master, gc, tracer, monitor.
-    deployment("master", slaves, zks),
-    deployment("gc", slaves, zks),
-    deployment("tracer", slaves, zks),
-    deployment("monitor", slaves, zks),
+    deployment("master", c.accumulo_slaves, c.zookeepers),
+    deployment("gc", c.accumulo_slaves, c.zookeepers),
+    deployment("tracer", c.accumulo_slaves, c.zookeepers),
+    deployment("monitor", c.accumulo_slaves, c.zookeepers),
 
 ] + [
 
     // One deployment for each slave
-    slaveDeployment(id, slaves, zks)
-    for id in std.range(0, slaves-1)
+    slaveDeployment(id, c.accumulo_slaves, c.zookeepers)
+    for id in std.range(0, c.accumulo_slaves-1)
     
 ] + [
 
     // Services for the Accumulo master, gc, tracer, monitor.
-    svc.new("accumulo-master", {app: "accumulo-master"}, servicePorts) +
-	svcLabels({app: "accumulo-master", component: "gaffer"}),
-    svc.new("accumulo-gc", {app: "accumulo-gc"}, servicePorts) +
-	svcLabels({app: "accumulo-gc", component: "gaffer"}),
-    svc.new("accumulo-tracer", {app: "accumulo-tracer"}, servicePorts) +
-	svcLabels({app: "accumulo-tracer", component: "gaffer"}),
-    svc.new("accumulo-monitor", {app: "accumulo-monitor"}, servicePorts) +
-	svcLabels({app: "accumulo-monitor", component: "gaffer"})
-    
-] + [
-
-    // A service for each slave.
-    local name = "accumulo-slave%04d" % id;
-    local labels = svcLabels({app: name, component: "gaffer"});
-    svc.new(name, {app: name}, slavePorts) + labels
-        for id in std.range(0, slaves-1)
+    svc.new("accumulo", {app: "accumulo-master"}, servicePorts) +
+	svcLabels({app: "accumulo"}) +
+	svc.mixin.spec.clusterIp("None")
     
 ];
-
 // Return the function which creates resources.
 resources
 

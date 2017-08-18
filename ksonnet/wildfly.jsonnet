@@ -24,7 +24,7 @@ local ports() = [
 
 // Constructs a list of Zookeeper hostnames, comma separated.
 local zookeeperList(count) =
-    std.join(",", std.makeArray(count, function(x) "zk%d" % (x + 1)));
+    std.join(",", std.makeArray(count, function(x) "zk%d.zk" % (x + 1)));
 
 // Environment variables
 local envs(zookeepers) = [
@@ -59,10 +59,10 @@ local servicePorts = [
 ];
 
 // Function which returns resource definitions - deployments and services.
-local resources(wildflys, zookeepers) = [
+local resources(c) = [
 
     // One deployment, with a set of replicas.
-    deployment(wildflys, zookeepers)
+    deployment(c.wildflys, c.zookeepers)
 
 ] + [
 

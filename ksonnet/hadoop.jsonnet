@@ -87,10 +87,10 @@ local servicePorts = [
 ];
 
 // Function which returns resource definitions - deployments and services.
-local resources(count, replication) = [
+local resources(config) = [
     
     // One deployment per Hadoop node.
-    deployment(id, replication) for id in std.range(0, count-1)
+    deployment(id, config.hadoop_replication) for id in std.range(0, config.hadoops-1)
 				
 ] + [
 

@@ -62,14 +62,16 @@ local volumes(id) = [
 local deployment(id, zks) = 
     depl.new("zk%d" % (id + 1), 1,
 	     containers(id, zks),
-	     {app: "zk%d" % (id + 1), component: "gaffer"}) +
+	     {app: "zookeeper", component: "gaffer"}) +
+    depl.mixin.spec.template.spec.hostname("zk%d" % (id + 1)) +
+    depl.mixin.spec.template.spec.subdomain("zk") +
     depl.mixin.spec.template.spec.volumes(volumes(id));
 
 // Function, returns a Zookeeper list, comma separated list of ZK IDs.
 local zookeeperList(count) =
-    std.join(",", std.makeArray(count, function(x) "zk%d" % (x + 1)));
+    std.join(",", std.makeArray(count, function(x) "zk%d.zk" % (x + 1)));
 
-// Ports declared on the Hadoop service.
+// Ports declared on the ZK service.
 local servicePorts = [
     svcPort.newNamed("internal1", 2888, 2888) + svcPort.protocol("TCP"),
     svcPort.newNamed("internal2", 3888, 3888) + svcPort.protocol("TCP"),
@@ -77,18 +79,18 @@ local servicePorts = [
 ];
 
 // Function which returns resource definitions - deployments and services.
-local resources(count) = [
+local resources(config) = [
 
     // One deployment for each Zookeeper
-    deployment(id, zookeeperList(count))
-    for id in std.range(0, count-1)
+    deployment(id, zookeeperList(config.zookeepers))
+    for id in std.range(0, config.zookeepers-1)
 
 ] + [
 
     // One service for each Zookeeper to allow it to be discovered by
     // Zookeeper name.
-    svc.new("zk%d" % (id + 1) , {app: "zk%d" % (id + 1)}, servicePorts)
-    for id in std.range(0, count-1)
+    svc.new("zk", {app: "zookeeper"}, servicePorts) +
+    svc.mixin.spec.clusterIp("None")
     
 ];
 
