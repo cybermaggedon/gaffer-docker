@@ -16,7 +16,7 @@
 
 GAFFER_VERSION=0.7.4
 KORYPHE_VERSION=0.1.2
-VERSION=0.7.4c
+VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
 
