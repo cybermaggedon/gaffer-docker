@@ -16,7 +16,7 @@
 
 GAFFER_VERSION=0.7.4
 KORYPHE_VERSION=0.1.2
-VERSION=0.7.4b
+VERSION=0.7.4c
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
 
@@ -61,7 +61,7 @@ container: wildfly-10.1.0.Final.zip
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
 
 wildfly-10.1.0.Final.zip:
-	wget download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip
+	wget -O $@ download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip
 
 push:
 	${SUDO} docker push ${ACCUMULO_REPOSITORY}:${VERSION}
