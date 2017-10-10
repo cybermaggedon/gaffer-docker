@@ -32,13 +32,13 @@ JAR_FILES=\
 SUDO=
 BUILD_ARGS=
 
-PROXY_ARGS=--build-arg HTTP_PROXY=${http_proxy}
-PROXY_ARGS += --build-arg http_proxy=${http_proxy}
-PROXY_ARGS += --build-arg HTTPS_PROXY=${https_proxy}
-PROXY_ARGS += --build-arg https_proxy=${https_proxy}
+#PROXY_ARGS=--build-arg HTTP_PROXY=${http_proxy}
+#PROXY_ARGS += --build-arg http_proxy=${http_proxy}
+#PROXY_ARGS += --build-arg HTTPS_PROXY=${https_proxy}
+#PROXY_ARGS += --build-arg https_proxy=${https_proxy}
 
-PROXY_HOST_PORT_ARGS=--build-arg proxy_host=${proxy_host}
-PROXY_HOST_PORT_ARGS += --build-arg proxy_port=${proxy_port}
+#PROXY_HOST_PORT_ARGS=--build-arg proxy_host=${proxy_host}
+#PROXY_HOST_PORT_ARGS += --build-arg proxy_port=${proxy_port}
 
 all: build container
 
