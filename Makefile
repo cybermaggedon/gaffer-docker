@@ -14,7 +14,7 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=1.0.0-RC4
+GAFFER_VERSION=1.0.0-RC2
 KORYPHE_VERSION=1.0.0
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
