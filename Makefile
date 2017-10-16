@@ -14,11 +14,11 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=0.7.8
-KORYPHE_VERSION=0.1.4
+GAFFER_VERSION=1.0.0
+KORYPHE_VERSION=1.0.0
 VERSION=$(shell git describe | sed 's/^v//')
-ACCUMULO_REPOSITORY=cybermaggedon/accumulo-gaffer
-WILDFLY_REPOSITORY=cybermaggedon/wildfly-gaffer
+ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
+WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
 
 WAR_FILES=\
 	gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
@@ -26,7 +26,7 @@ WAR_FILES=\
 JAR_FILES=\
         gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
         gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
-        koryphe/koryphe/${KORYPHE_VERSION}/koryphe-${KORYPHE_VERSION}.jar \
+        koryphe/core/${KORYPHE_VERSION}/core-${KORYPHE_VERSION}.jar \
         gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar
 
 SUDO=
@@ -56,12 +56,12 @@ build: product
 	done; \
 	${SUDO} docker rm -f $${id}
 
-container: wildfly-10.1.0.Final.zip
+container: wildfly-11.0.0.CR1.zip
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
 
-wildfly-10.1.0.Final.zip:
-	wget -O $@ download.jboss.org/wildfly/10.1.0.Final/wildfly-10.1.0.Final.zip
+wildfly-11.0.0.CR1.zip:
+	wget -O $@ download.jboss.org/wildfly/11.0.0.CR1/wildfly-11.0.0.CR1.zip
 
 push:
 	${SUDO} docker push ${ACCUMULO_REPOSITORY}:${VERSION}
