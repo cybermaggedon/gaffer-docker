@@ -19,6 +19,7 @@ KORYPHE_VERSION=1.0.0
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
+ACCUMULO_VERSION=$(shell cat accumulo-version)
 
 WAR_FILES=\
 	gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
@@ -57,6 +58,8 @@ build: product
 	${SUDO} docker rm -f $${id}
 
 container: wildfly-11.0.0.CR1.zip
+	echo 'FROM cybermaggedon/accumulo:${ACCUMULO_VERSION}' > Dockerfile.accumulo
+	echo 'COPY product/*.jar /usr/local/accumulo/lib/ext/' >> Dockerfile.accumulo
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
 
