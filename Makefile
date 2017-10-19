@@ -69,3 +69,23 @@ wildfly-11.0.0.CR1.zip:
 push:
 	${SUDO} docker push ${ACCUMULO_REPOSITORY}:${VERSION}
 	${SUDO} docker push ${WILDFLY_REPOSITORY}:${VERSION}
+
+# Continuous deployment support
+BRANCH=master
+FILE=gaffer-version
+REPO=git@github.com:trustnetworks/gaffer
+
+tools: phony
+	if [ ! -d tools ]; then \
+		git clone git@github.com:trustnetworks/cd-tools tools; \
+	fi; \
+	(cd tools; git pull)
+
+phony:
+
+bump-version: tools
+	tools/bump-version
+
+update-cluster-config: tools
+	tools/update-version-file ${BRANCH} ${VERSION} ${FILE} ${REPO}
+
