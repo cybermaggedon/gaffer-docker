@@ -48,6 +48,7 @@ product:
 
 # In the future this could be removed when the Gaffer binaries are published to Maven Central.
 build: product
+	-rm -f product/*
 	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} --build-arg GAFFER_VERSION=${GAFFER_VERSION} -t gaffer-build -f Dockerfile.build .
 	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \
 	dir=/root/.m2/repository/uk/gov/gchq; \
