@@ -22,13 +22,17 @@ WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
 ACCUMULO_VERSION=$(shell cat accumulo-version)
 
 WAR_FILES=\
-	gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
+	uk/gov/gchq/gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
 
 JAR_FILES=\
-        gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
-        gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
+        uk/gov/gchq/gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
+        uk/gov/gchq/gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
         koryphe/core/${KORYPHE_VERSION}/core-${KORYPHE_VERSION}.jar \
-        gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar
+        uk/gov/gchq/gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar \
+	uk/gov/gchq/gaffer/time-library/${GAFFER_VERSION}/time-library-${GAFFER_VERSION}.jar \
+	uk/gov/gchq/gaffer/bitmap-library/${GAFFER_VERSION}/bitmap-library-${GAFFER_VERSION}.jar \
+	uk/gov/gchq/gaffer/sketches-library/${GAFFER_VERSION}/sketches-library-${GAFFER_VERSION}.jar \
+        org/roaringbitmap/RoaringBitmap/0.5.11/RoaringBitmap-0.5.11.jar
 
 SUDO=
 BUILD_ARGS=
@@ -49,9 +53,10 @@ product:
 # In the future this could be removed when the Gaffer binaries are published to Maven Central.
 build: product
 	-rm -f product/*
+	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} -t gaffer-dev -f Dockerfile.dev .
 	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} --build-arg GAFFER_VERSION=${GAFFER_VERSION} -t gaffer-build -f Dockerfile.build .
 	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \
-	dir=/root/.m2/repository/uk/gov/gchq; \
+	dir=/root/.m2/repository; \
 	for file in ${WAR_FILES} ${JAR_FILES}; do \
 		bn=$$(basename $$file); \
 		${SUDO} docker cp $${id}:$${dir}/$${file} product/$${bn}; \
