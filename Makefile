@@ -27,12 +27,14 @@ WAR_FILES=\
 JAR_FILES=\
         uk/gov/gchq/gaffer/accumulo-store/${GAFFER_VERSION}/accumulo-store-${GAFFER_VERSION}-iterators.jar \
         uk/gov/gchq/gaffer/common-util/${GAFFER_VERSION}/common-util-${GAFFER_VERSION}.jar \
-        koryphe/core/${KORYPHE_VERSION}/core-${KORYPHE_VERSION}.jar \
+        uk/gov/gchq/koryphe/core/${KORYPHE_VERSION}/core-${KORYPHE_VERSION}.jar \
         uk/gov/gchq/gaffer/serialisation/${GAFFER_VERSION}/serialisation-${GAFFER_VERSION}.jar \
 	uk/gov/gchq/gaffer/time-library/${GAFFER_VERSION}/time-library-${GAFFER_VERSION}.jar \
 	uk/gov/gchq/gaffer/bitmap-library/${GAFFER_VERSION}/bitmap-library-${GAFFER_VERSION}.jar \
 	uk/gov/gchq/gaffer/sketches-library/${GAFFER_VERSION}/sketches-library-${GAFFER_VERSION}.jar \
-        org/roaringbitmap/RoaringBitmap/0.5.11/RoaringBitmap-0.5.11.jar
+        org/roaringbitmap/RoaringBitmap/0.5.11/RoaringBitmap-0.5.11.jar \
+	com/yahoo/datasketches/sketches-core/0.10.0 \
+	com/yahoo/datasketches/memory/0.10.1/memory-0.10.1.jar
 
 SUDO=
 BUILD_ARGS=
