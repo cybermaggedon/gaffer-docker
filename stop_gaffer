@@ -1,0 +1,3 @@
+
+docker rm -f hadoop zookeeper accumulo gaffer
+sudo rm -rf /tmp/data

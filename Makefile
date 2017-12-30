@@ -14,7 +14,7 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=1.0.2
+GAFFER_VERSION=1.1.2
 KORYPHE_VERSION=1.0.0
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
@@ -54,7 +54,7 @@ product:
 
 # In the future this could be removed when the Gaffer binaries are published to Maven Central.
 build: product
-	-rm -f product/*
+	-rm -rf product/*
 	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} -t gaffer-dev -f Dockerfile.dev .
 	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} --build-arg GAFFER_VERSION=${GAFFER_VERSION} -t gaffer-build -f Dockerfile.build .
 	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \

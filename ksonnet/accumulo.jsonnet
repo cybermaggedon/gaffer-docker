@@ -89,7 +89,7 @@ local envs(slaves, zks, id, proc) = [
 
 // Container definition for non-slave containers.
 local containers(proc, slaves, xks) = [
-    container.new("accumulo", "cybermaggedon/accumulo-gaffer:0.7.4b") +
+    container.new("accumulo", "cybermaggedon/accumulo-gaffer:1.1.2") +
         container.ports(ports()) +
 	container.command(["/start-process", proc]) +
 	container.env(envs(slaves, xks, -1, proc)) +
@@ -103,7 +103,7 @@ local containers(proc, slaves, xks) = [
 
 // Container definition for slave containers.
 local slaveContainers(id, slaves, xks) = [
-    container.new("accumulo", "cybermaggedon/accumulo-gaffer:0.7.4b") +
+    container.new("accumulo", "cybermaggedon/accumulo-gaffer:1.1.2") +
         container.ports(ports()) +
 	container.command(["/start-process", "tserver"]) +
 	container.env(envs(slaves, xks, id, "tserver")) +

@@ -40,7 +40,7 @@ local envs(id, zks) = [
 
 // Container definition.
 local containers(id, zks) = [
-    container.new("zookeeper", "cybermaggedon/zookeeper:3.4.10") +
+    container.new("zookeeper", "cybermaggedon/zookeeper:3.4.10b") +
         container.ports(ports()) +
         container.volumeMounts(volumeMounts(id)) +
 	container.env(envs(id, zks)) +

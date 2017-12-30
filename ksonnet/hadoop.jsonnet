@@ -56,7 +56,7 @@ local envs(id, replication) = [
 
 // Container definition.
 local containers(id, replication) = [
-    container.new("hadoop", "cybermaggedon/hadoop:2.8.0") +
+    container.new("hadoop", "cybermaggedon/hadoop:2.8.1") +
         container.ports(ports()) +
         container.volumeMounts(volumeMounts(id)) +
 	container.env(envs(id, replication)) +

@@ -2,13 +2,18 @@ diff --git a/rest-api/accumulo-rest/pom.xml b/rest-api/accumulo-rest/pom.xml
 index 455c00ae2..001001e47 100644
 --- a/rest-api/accumulo-rest/pom.xml
 +++ b/rest-api/accumulo-rest/pom.xml
-@@ -52,6 +52,11 @@
+@@ -52,6 +52,16 @@
              <scope>test</scope>
              <type>test-jar</type>
          </dependency>
 +        <dependency>
 +            <groupId>uk.gov.gchq.gaffer</groupId>
 +            <artifactId>time-library</artifactId>
++            <version>${project.parent.version}</version>
++        </dependency>
++        <dependency>
++            <groupId>uk.gov.gchq.gaffer</groupId>
++            <artifactId>sketches-library</artifactId>
 +            <version>${project.parent.version}</version>
 +        </dependency>
      </dependencies>

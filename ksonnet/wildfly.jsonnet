@@ -36,7 +36,7 @@ local envs(zookeepers) = [
 
 // Container definition.
 local containers(zookeepers) = [
-    container.new("wildfly", "gcr.io/trust-networks/gaffer:0.7.4b") +
+    container.new("wildfly", "gcr.io/trust-networks/gaffer:1.1.2") +
         container.ports(ports()) +
 	container.env(envs(zookeepers)) +
 	container.mixin.resources.limits({
