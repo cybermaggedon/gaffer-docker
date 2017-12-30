@@ -1,6 +1,36 @@
 {
   "entities": {
-    "entity": {
+    "ip": {
+      "vertex": "string",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "tcp": {
+      "vertex": "string",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "udp": {
+      "vertex": "string",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "url": {
+      "vertex": "string",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "dns": {
+      "vertex": "string",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "device": {
       "vertex": "string",
       "properties": {
         "count": "int"
@@ -8,7 +38,39 @@
     }
   },
   "edges": {
-    "edge": {
+    "ipflow": {
+      "source": "string",
+      "destination": "string",
+      "directed": "true",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "tcpflow": {
+      "source": "string",
+      "destination": "string",
+      "directed": "true",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "udpflow": {
+      "source": "string",
+      "destination": "string",
+      "directed": "true",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "httprequest": {
+      "source": "string",
+      "destination": "string",
+      "directed": "true",
+      "properties": {
+        "count": "int"
+      }
+    },
+    "dnsrequest": {
       "source": "string",
       "destination": "string",
       "directed": "true",
@@ -25,7 +87,16 @@
       }
     },
     "string": {
-      "class": "java.lang.String"
+      "class": "java.lang.String",
+      "aggregateFunction": {
+        "class": "uk.gov.gchq.koryphe.impl.binaryoperator.First"
+      }
+    },
+    "double": {
+      "class": "java.lang.Double",
+      "aggregateFunction": {
+        "class": "uk.gov.gchq.koryphe.impl.binaryoperator.Sum"
+      }
     },
     "true": {
       "class": "java.lang.Boolean",

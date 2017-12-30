@@ -13,9 +13,9 @@ data = """
 	    "properties": {
 		"count": 1
 	    },
-	    "group": "edge",
-	    "source": "bristol",
-	    "destination": "birmingham",
+	    "group": "ipflow",
+	    "source": "10.0.1.6",
+	    "destination": "10.0.0.1",
 	    "directed": true
 	},
 	{
@@ -23,9 +23,9 @@ data = """
 	    "properties": {
 		"count": 1
 	    },
-	    "group": "edge",
-	    "source": "bristol",
-	    "destination": "exeter",
+	    "group": "ipflow",
+	    "source": "10.0.1.6",
+	    "destination": "10.2.91.12",
 	    "directed": true
 	},
 	{
@@ -33,24 +33,24 @@ data = """
 	    "properties": {
 		"count": 1
 	    },
-	    "group": "entity",
-	    "vertex": "bristol"
+	    "group": "ip",
+	    "vertex": "10.0.1.6"
 	},
         {
 	    "class": "uk.gov.gchq.gaffer.data.element.Entity",
 	    "properties": {
 		"count": 1
 	    },
-	    "group": "entity",
-	    "vertex": "birmingham"
+	    "group": "ip",
+	    "vertex": "10.0.0.1"
 	},
         {
 	    "class": "uk.gov.gchq.gaffer.data.element.Entity",
 	    "properties": {
 		"count": 1
 	    },
-	    "group": "entity",
-	    "vertex": "exeter"
+	    "group": "ip",
+	    "vertex": "10.2.91.12"
 	}
     ]
 }
