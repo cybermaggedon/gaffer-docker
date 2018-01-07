@@ -14,8 +14,8 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=1.1.2
-KORYPHE_VERSION=1.0.0
+GAFFER_VERSION=1.2.0
+KORYPHE_VERSION=1.1.0
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer

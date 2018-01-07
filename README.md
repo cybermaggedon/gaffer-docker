@@ -47,10 +47,10 @@ For Hadoop and Zookeeper, I have containers ready to use.
 To run:
 
 ```
-  GAFFER_VERSION=1.1.2
+  GAFFER_VERSION=1.2.0
 
   # Run Hadoop
-  docker run -d --name hadoop cybermaggedon/hadoop:2.8.1
+  docker run -d --name hadoop cybermaggedon/hadoop:2.8.2
 
   # Run Zookeeper
   docker run -d --name zookeeper cybermaggedon/zookeeper:3.4.10b
@@ -75,7 +75,7 @@ Wildfly needs no persistent state.
 
 ```
   # Run Hadoop
-  docker run -d --name hadoop -v /data/hadoop:/data cybermaggedon/hadoop:2.8.1
+  docker run -d --name hadoop -v /data/hadoop:/data cybermaggedon/hadoop:2.8.2
 
   # Run Zookeeper
   docker run -d --name zookeeper -v /data/zookeeper:/data \
@@ -126,18 +126,18 @@ To set up a cluster, you need to take control of address allocation.
       -e DAEMONS=namenode,datanode,secondarynamenode \
       --name=hadoop01 \
       -p 50070:50070 -p 50075:50075 -p 50090:50090 -p 9000:9000 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   # Datanodes
   docker run -d --ip=10.10.6.4 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop02 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   docker run -d --ip=10.10.6.5 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop03 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   ############################################################################
   # Zookeeper cluster, 3 nodes.
@@ -236,18 +236,18 @@ and recovered.
       -e DAEMONS=namenode,datanode,secondarynamenode \
       --name=hadoop01 \
       -p 50070:50070 -p 50075:50075 -p 50090:50090 -p 9000:9000 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   # Datanodes
   docker run -d --ip=10.10.6.4 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop02 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   docker run -d --ip=10.10.6.5 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop03 \
-      cybermaggedon/hadoop:2.8.1
+      cybermaggedon/hadoop:2.8.2
 
   ############################################################################
   # Zookeeper cluster, 3 nodes.
