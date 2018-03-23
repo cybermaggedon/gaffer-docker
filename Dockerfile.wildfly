@@ -39,7 +39,7 @@ CMD ( \
   echo "accumulo.zookeepers=${ZOOKEEPERS:-zookeeper:2181}" \
   ) >> store.properties; \
   bin/standalone.sh -Dgaffer.schemas=/usr/local/wildfly/schema \
-      -Dgaffer.storeProperties=/usr/local/wildfly/store/store.properties
+      -Dgaffer.storeProperties=/usr/local/wildfly/store.properties
 
 EXPOSE 8080
 
