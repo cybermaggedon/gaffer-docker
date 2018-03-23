@@ -29,7 +29,7 @@ WORKDIR /usr/local/wildfly
 COPY product/*.war standalone/deployments/
 COPY resources/standalone.xml standalone/configuration/
 COPY resources/schema schema
-RUN mkdir resources/store/
+RUN mkdir store/
 COPY resources/store.properties store/store.properties
 
 CMD ( \
