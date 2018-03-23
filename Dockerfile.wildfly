@@ -29,10 +29,10 @@ WORKDIR /usr/local/wildfly
 COPY product/*.war standalone/deployments/
 COPY resources/standalone.xml standalone/configuration/
 COPY resources/schema schema
-RUN mkdir store/
-COPY resources/store.properties store/store.properties
+COPY resources/store.properties store.properties
 
 CMD ( \
+  echo "accumulo.table=${ACCUMULO_TABLE:-gaffer}"; \
   echo "accumulo.instance=${ACCUMULO_INSTANCE:-accumulo}"; \
   echo "accumulo.user=${ACCUMULO_USER:-root}"; \
   echo "accumulo.password=${ACCUMULO_SECRET:-accumulo}"; \
