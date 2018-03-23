@@ -29,7 +29,8 @@ WORKDIR /usr/local/wildfly
 COPY product/*.war standalone/deployments/
 COPY resources/standalone.xml standalone/configuration/
 COPY resources/schema schema
-COPY resources/store.properties store.properties
+RUN mkdir resources/store/
+COPY resources/store.properties store/store.properties
 
 CMD ( \
   echo "accumulo.instance=${ACCUMULO_INSTANCE:-accumulo}"; \
@@ -38,7 +39,7 @@ CMD ( \
   echo "accumulo.zookeepers=${ZOOKEEPERS:-zookeeper:2181}" \
   ) >> store.properties; \
   bin/standalone.sh -Dgaffer.schemas=/usr/local/wildfly/schema \
-      -Dgaffer.storeProperties=/usr/local/wildfly/store.properties
+      -Dgaffer.storeProperties=/usr/local/wildfly/store/store.properties
 
 EXPOSE 8080
 
