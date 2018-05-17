@@ -65,7 +65,7 @@ build: product
 	done; \
 	${SUDO} docker rm -f $${id}
 
-container: wildfly-11.0.0.Final.zip
+container: wildfly.zip
 	echo 'FROM cybermaggedon/accumulo:${ACCUMULO_VERSION}' > Dockerfile.accumulo
 	echo 'COPY product/*.jar /usr/local/accumulo/lib/ext/' >> Dockerfile.accumulo
 	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
