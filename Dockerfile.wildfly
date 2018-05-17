@@ -14,16 +14,16 @@
 # limitations under the License.
 ##########################################################
 
-FROM fedora:27
+FROM fedora:28
 
 RUN dnf update -y
 RUN dnf install -y unzip
 RUN dnf install -y java-1.8.0-openjdk maven
 
 WORKDIR /usr/local
-COPY wildfly-11.0.0.CR1.zip /usr/local/
-RUN unzip /usr/local/wildfly-11.0.0.CR1.zip
-RUN ln -s wildfly-11.0.0.CR1 wildfly
+COPY wildfly.zip /usr/local/
+RUN unzip /usr/local/wildfly.zip
+RUN ln -s wildfly-11.0.0.Final wildfly
 
 WORKDIR /usr/local/wildfly
 COPY product/*.war standalone/deployments/
