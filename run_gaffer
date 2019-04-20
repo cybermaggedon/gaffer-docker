@@ -6,7 +6,7 @@ data_dir=/tmp/data
 # Maybe clear stuff out?
 sudo rm -rf ${data_dir}
 
-GAFFER_VERSION=1.2.0
+GAFFER_VERSION=1.9.0
 
 # Initialise data directory for Hadoop, ZK, Accumulo
 mkdir -p ${data_dir}/hadoop
@@ -17,11 +17,11 @@ sudo chcon -Rt svirt_sandbox_file_t ${data_dir}
 
 # Run Hadoop
 docker run -d --name hadoop -v ${data_dir}/hadoop:/data \
-       docker.io/cybermaggedon/hadoop:2.8.2
+       docker.io/cybermaggedon/hadoop:2.9.2
 
 # Run Zookeeper
 docker run -d --name zookeeper -v ${data_dir}/zookeeper:/data \
-       docker.io/cybermaggedon/zookeeper:3.4.10b
+       docker.io/cybermaggedon/zookeeper:3.4.14
 
 # Leave time for Hadoop and ZK to start
 sleep 10

@@ -14,8 +14,9 @@
 # limitations under the License.
 ##########################################################
 
-FROM fedora:27
+FROM fedora:29
 
-RUN dnf install -y java-1.8.0-openjdk maven
-RUN dnf install -y git
+RUN dnf install -y java-1.8.0-openjdk maven && \
+    dnf install -y git && \
+    dnf clean all
 

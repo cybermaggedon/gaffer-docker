@@ -16,9 +16,8 @@
 
 FROM gaffer-dev
 
-RUN dnf install -y java-1.8.0-openjdk maven
-RUN dnf install -y git
-RUN dnf install -y patch
+RUN dnf install -y java-1.8.0-openjdk maven && dnf install -y git && \
+    dnf install -y patch
 
 ARG GAFFER_VERSION
 RUN mkdir -p /usr/local/src/gaffer

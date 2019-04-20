@@ -14,8 +14,8 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=1.4.1
-KORYPHE_VERSION=1.3.0
+GAFFER_VERSION=1.9.0
+KORYPHE_VERSION=1.7.0
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
@@ -33,8 +33,8 @@ JAR_FILES=\
 	uk/gov/gchq/gaffer/bitmap-library/${GAFFER_VERSION}/bitmap-library-${GAFFER_VERSION}.jar \
 	uk/gov/gchq/gaffer/sketches-library/${GAFFER_VERSION}/sketches-library-${GAFFER_VERSION}.jar \
         org/roaringbitmap/RoaringBitmap/0.5.11/RoaringBitmap-0.5.11.jar \
-	com/yahoo/datasketches/sketches-core/0.10.0 \
-	com/yahoo/datasketches/memory/0.10.1/memory-0.10.1.jar
+	com/yahoo/datasketches/sketches-core/0.12.0 \
+	com/yahoo/datasketches/memory/0.12.0/memory-0.12.0.jar
 
 SUDO=
 BUILD_ARGS=

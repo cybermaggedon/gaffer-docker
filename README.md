@@ -1,20 +1,4 @@
 
-Copyright 2016 Crown Copyright, cybermaggedon
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-=======
-
 # Gaffer Docker
 
 What you have here, is Docker containers for Gaffer.  Can be deployed small for
@@ -47,13 +31,13 @@ For Hadoop and Zookeeper, I have containers ready to use.
 To run:
 
 ```
-  GAFFER_VERSION=1.2.0
+  GAFFER_VERSION=1.9.0
 
   # Run Hadoop
-  docker run -d --name hadoop cybermaggedon/hadoop:2.8.2
+  docker run -d --name hadoop cybermaggedon/hadoop:2.9.2
 
   # Run Zookeeper
-  docker run -d --name zookeeper cybermaggedon/zookeeper:3.4.10b
+  docker run -d --name zookeeper cybermaggedon/zookeeper:3.4.14
 
   # Run Accumulo
   docker run -d --name accumulo --link zookeeper:zookeeper \
@@ -75,11 +59,11 @@ Wildfly needs no persistent state.
 
 ```
   # Run Hadoop
-  docker run -d --name hadoop -v /data/hadoop:/data cybermaggedon/hadoop:2.8.2
+  docker run -d --name hadoop -v /data/hadoop:/data cybermaggedon/hadoop:2.9.2
 
   # Run Zookeeper
   docker run -d --name zookeeper -v /data/zookeeper:/data \
-        cybermaggedon/zookeeper:3.4.10b
+        cybermaggedon/zookeeper:3.4.14
 
   # Run Accumulo
   docker run -d --name accumulo \
@@ -126,18 +110,18 @@ To set up a cluster, you need to take control of address allocation.
       -e DAEMONS=namenode,datanode,secondarynamenode \
       --name=hadoop01 \
       -p 50070:50070 -p 50075:50075 -p 50090:50090 -p 9000:9000 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   # Datanodes
   docker run -d --ip=10.10.6.4 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop02 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   docker run -d --ip=10.10.6.5 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop03 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   ############################################################################
   # Zookeeper cluster, 3 nodes.
@@ -145,17 +129,17 @@ To set up a cluster, you need to take control of address allocation.
   docker run -d --ip=10.10.5.10 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=1 \
-      --name zk1 -p 2181:2181 cybermaggedon/zookeeper:3.4.10b
+      --name zk1 -p 2181:2181 cybermaggedon/zookeeper:3.4.14
       
   docker run -d --ip=10.10.5.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=2 --name zk2 --link zk1:zk1 \
-      cybermaggedon/zookeeper:3.4.10b
+      cybermaggedon/zookeeper:3.4.14
       
   docker run -d --ip=10.10.5.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=3 --name zk3 --link zk1:zk1 \
-      cybermaggedon/zookeeper:3.4.10b
+      cybermaggedon/zookeeper:3.4.14
 
   ############################################################################
   # Accumulo, 3 nodes
@@ -236,18 +220,18 @@ and recovered.
       -e DAEMONS=namenode,datanode,secondarynamenode \
       --name=hadoop01 \
       -p 50070:50070 -p 50075:50075 -p 50090:50090 -p 9000:9000 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   # Datanodes
   docker run -d --ip=10.10.6.4 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop02 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   docker run -d --ip=10.10.6.5 --net my_network --link hadoop01:hadoop01 \
       -e DAEMONS=datanode -e NAMENODE_URI=hdfs://hadoop01:9000 \
       --name=hadoop03 \
-      cybermaggedon/hadoop:2.8.2
+      cybermaggedon/hadoop:2.9.2
 
   ############################################################################
   # Zookeeper cluster, 3 nodes.
@@ -255,17 +239,17 @@ and recovered.
   docker run -d --ip=10.10.5.10 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=1 \
-      --name zk1 -p 2181:2181 cybermaggedon/zookeeper:3.4.10b
+      --name zk1 -p 2181:2181 cybermaggedon/zookeeper:3.4.14
       
   docker run -d --ip=10.10.5.11 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=2 --name zk2 --link zk1:zk1 \
-      cybermaggedon/zookeeper:3.4.10b
+      cybermaggedon/zookeeper:3.4.14
       
   docker run -d --ip=10.10.5.12 --net my_network \
       -e ZOOKEEPERS=10.10.5.10,10.10.5.11,10.10.5.12 \
       -e ZOOKEEPER_MYID=3 --name zk3 --link zk1:zk1 \
-      cybermaggedon/zookeeper:3.4.10b
+      cybermaggedon/zookeeper:3.4.14
 
   ############################################################################
   # Accumulo, 3 nodes
