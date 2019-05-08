@@ -20,7 +20,7 @@ VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
 ACCUMULO_VERSION=$(shell cat accumulo-version)
-HADOOP_VERSION=2.8.5
+HADOOP_VERSION=2.9.2
 
 WAR_FILES=\
 	uk/gov/gchq/gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
