@@ -20,6 +20,7 @@ VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
 ACCUMULO_VERSION=$(shell cat accumulo-version)
+HADOOP_VERSION=2.8.5
 
 WAR_FILES=\
 	uk/gov/gchq/gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
@@ -55,8 +56,14 @@ product:
 # In the future this could be removed when the Gaffer binaries are published to Maven Central.
 build: product
 	-rm -rf product/*
-	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} -t gaffer-dev -f Dockerfile.dev .
-	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} ${BUILD_ARGS} --build-arg GAFFER_VERSION=${GAFFER_VERSION} -t gaffer-build -f Dockerfile.build .
+	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
+		${BUILD_ARGS} -t gaffer-dev -f Dockerfile.dev .
+	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
+		${BUILD_ARGS} \
+		--build-arg GAFFER_VERSION=${GAFFER_VERSION} \
+		--build-arg HADOOP_VERSION=${HADOOP_VERSION} \
+		--build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
+		-t gaffer-build -f Dockerfile.build .
 	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \
 	dir=/root/.m2/repository; \
 	for file in ${WAR_FILES} ${JAR_FILES}; do \

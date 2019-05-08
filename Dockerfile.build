@@ -16,15 +16,22 @@
 
 FROM gaffer-dev
 
+ARG GAFFER_VERSION
+ARG ACCUMULO_VERSION
+ARG HADOOP_VERSION
+
 RUN dnf install -y java-1.8.0-openjdk maven && dnf install -y git && \
     dnf install -y patch
 
-ARG GAFFER_VERSION
 RUN mkdir -p /usr/local/src/gaffer
 WORKDIR /usr/local/src/gaffer
 
 RUN git clone http://github.com/gchq/Gaffer.git .; \
   git checkout gaffer2-$GAFFER_VERSION
+
+# Change Accumulo and Hadoop versions
+# RUN sed -i -e 's=<accumulo.version>.*</accumulo.version>=<accumulo.version>${ACCUMULO_VERSION}</accumulo.version>=' pom.xml
+RUN sed -i -e 's=<hadoop.version>.*</hadoop.version>=<hadoop.version>${HADOOP_VERSION}</hadoop.version>=' pom.xml
 
 COPY library.patch .
 
