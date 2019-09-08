@@ -6,7 +6,7 @@ data_dir=/tmp/data
 # Maybe clear stuff out?
 sudo rm -rf ${data_dir}
 
-GAFFER_VERSION=1.9.0
+GAFFER_VERSION=1.9.1
 
 # Initialise data directory for Hadoop, ZK, Accumulo
 mkdir -p ${data_dir}/hadoop
@@ -22,9 +22,6 @@ docker run -d --name hadoop -v ${data_dir}/hadoop:/data \
 # Run Zookeeper
 docker run -d --name zookeeper -v ${data_dir}/zookeeper:/data \
        docker.io/cybermaggedon/zookeeper:3.4.14
-
-# Leave time for Hadoop and ZK to start
-sleep 10
 
 # Run Accumulo
 docker run -d --name accumulo \
