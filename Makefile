@@ -14,13 +14,15 @@
 # limitations under the License.
 ##########################################################
 
-GAFFER_VERSION=1.9.1
-KORYPHE_VERSION=1.7.0
+GAFFER_VERSION=1.12.0
+KORYPHE_VERSION=1.8.4
 VERSION=$(shell git describe | sed 's/^v//')
 ACCUMULO_REPOSITORY=docker.io/cybermaggedon/accumulo-gaffer
 WILDFLY_REPOSITORY=docker.io/cybermaggedon/wildfly-gaffer
 ACCUMULO_VERSION=$(shell cat accumulo-version)
-HADOOP_VERSION=2.9.2
+HADOOP_VERSION=2.10.0
+
+DOCKER=docker
 
 WAR_FILES=\
 	uk/gov/gchq/gaffer/accumulo-rest/${GAFFER_VERSION}/accumulo-rest-${GAFFER_VERSION}.war
@@ -34,7 +36,7 @@ JAR_FILES=\
 	uk/gov/gchq/gaffer/bitmap-library/${GAFFER_VERSION}/bitmap-library-${GAFFER_VERSION}.jar \
 	uk/gov/gchq/gaffer/sketches-library/${GAFFER_VERSION}/sketches-library-${GAFFER_VERSION}.jar \
         org/roaringbitmap/RoaringBitmap/0.5.11/RoaringBitmap-0.5.11.jar \
-	com/yahoo/datasketches/sketches-core/0.12.0 \
+	com/yahoo/datasketches/sketches-core/0.12.0/sketches-core-0.12.0.jar \
 	com/yahoo/datasketches/memory/0.12.0/memory-0.12.0.jar
 
 SUDO=
@@ -56,34 +58,34 @@ product:
 # In the future this could be removed when the Gaffer binaries are published to Maven Central.
 build: product
 	-rm -rf product/*
-	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
+	${SUDO} ${DOCKER} build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
 		${BUILD_ARGS} -t gaffer-dev -f Dockerfile.dev .
-	${SUDO} docker build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
+	${SUDO} ${DOCKER} build ${PROXY_ARGS} ${PROXY_HOST_PORT_ARGS} \
 		${BUILD_ARGS} \
 		--build-arg GAFFER_VERSION=${GAFFER_VERSION} \
 		--build-arg HADOOP_VERSION=${HADOOP_VERSION} \
 		--build-arg ACCUMULO_VERSION=${ACCUMULO_VERSION} \
 		-t gaffer-build -f Dockerfile.build .
-	id=$$(${SUDO} docker run -d gaffer-build sleep 3600); \
+	id=$$(${SUDO} ${DOCKER} run -d gaffer-build sleep 3600); \
 	dir=/root/.m2/repository; \
 	for file in ${WAR_FILES} ${JAR_FILES}; do \
 		bn=$$(basename $$file); \
-		${SUDO} docker cp $${id}:$${dir}/$${file} product/$${bn}; \
+		${SUDO} ${DOCKER} cp $${id}:$${dir}/$${file} product/$${bn}; \
 	done; \
-	${SUDO} docker rm -f $${id}
+	${SUDO} ${DOCKER} rm -f $${id}
 
 container: wildfly.zip
 	echo 'FROM cybermaggedon/accumulo:${ACCUMULO_VERSION}' > Dockerfile.accumulo
 	echo 'COPY product/*.jar /usr/local/accumulo/lib/ext/' >> Dockerfile.accumulo
-	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
-	${SUDO} docker build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
+	${SUDO} ${DOCKER} build ${PROXY_ARGS} ${BUILD_ARGS} -t ${ACCUMULO_REPOSITORY}:${VERSION} -f Dockerfile.accumulo .
+	${SUDO} ${DOCKER} build ${PROXY_ARGS} ${BUILD_ARGS} -t ${WILDFLY_REPOSITORY}:${VERSION} -f Dockerfile.wildfly .
 
 wildfly.zip:
-	wget -O $@ download.jboss.org/wildfly/11.0.0.Final/wildfly-11.0.0.Final.zip
+	wget -O $@ download.jboss.org/wildfly/19.1.0.Final/wildfly-19.1.0.Final.zip
 
 push:
-	${SUDO} docker push ${ACCUMULO_REPOSITORY}:${VERSION}
-	${SUDO} docker push ${WILDFLY_REPOSITORY}:${VERSION}
+	${SUDO} ${DOCKER} push ${ACCUMULO_REPOSITORY}:${VERSION}
+	${SUDO} ${DOCKER} push ${WILDFLY_REPOSITORY}:${VERSION}
 
 # Continuous deployment support
 BRANCH=master

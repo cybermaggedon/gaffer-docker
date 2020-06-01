@@ -21,23 +21,13 @@ ARG ACCUMULO_VERSION
 ARG HADOOP_VERSION
 
 RUN dnf install -y java-1.8.0-openjdk maven && dnf install -y git && \
-    dnf install -y patch
+    dnf install -y patch && dnf clean all
 
 RUN mkdir -p /usr/local/src/gaffer
 WORKDIR /usr/local/src/gaffer
 
 RUN git clone http://github.com/gchq/Gaffer.git .; \
   git checkout gaffer2-$GAFFER_VERSION
-
-# Change Accumulo and Hadoop versions
-RUN sed -i -e 's=<accumulo.version>.*</accumulo.version>=<accumulo.version>${ACCUMULO_VERSION}</accumulo.version>=' pom.xml
-RUN sed -i -e 's=<hadoop.version>.*</hadoop.version>=<hadoop.version>${HADOOP_VERSION}</hadoop.version>=' pom.xml
-
-COPY library.patch .
-COPY accumulo-1.9.patch .
-
-RUN patch -p1 < library.patch
-RUN patch -p1 < accumulo-1.9.patch
 
 ARG proxy_host
 ARG proxy_port
