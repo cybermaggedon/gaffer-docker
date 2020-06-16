@@ -29,6 +29,10 @@ WORKDIR /usr/local/src/gaffer
 RUN git clone http://github.com/gchq/Gaffer.git .; \
   git checkout gaffer2-$GAFFER_VERSION
 
+COPY library.patch .
+
+RUN patch -p1 < library.patch
+
 ARG proxy_host
 ARG proxy_port
 RUN export MAVEN_ARGS=; \
